@@ -29,4 +29,4 @@ if (window.location.hostname === "localhost") {
   connectAuthEmulator(auth, "http://localhost:9099");
   connectFirestoreEmulator(db, "localhost", 8080);
 }
-exports = { auth, db };
+export { auth, db };
