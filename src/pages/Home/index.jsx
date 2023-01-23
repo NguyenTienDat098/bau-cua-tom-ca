@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../providers/User";
 import { useNavigate } from "react-router-dom";
-import Table from "../../components/Table";
-import Result from "../../components/Results";
+import FindRoom from "../../components/FindRoom";
+import Notifications from "../../components/Notifications";
 function Home() {
   const UserData = useContext(UserContext);
   const { user } = UserData;
@@ -10,12 +10,16 @@ function Home() {
   useEffect(() => {
     if (!user) {
       navigate("/login");
+    } else {
+      if (user.roomIdJoin !== "") {
+        navigate(`/room/${user.roomIdJoin}`);
+      }
     }
-  }, [user, navigate]);
+  }, [navigate, user]);
   return (
     <>
-      <Table />
-      <Result />
+      <Notifications />
+      <FindRoom />
     </>
   );
 }

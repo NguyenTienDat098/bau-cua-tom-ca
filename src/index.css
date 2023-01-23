@@ -7,13 +7,14 @@
   --background: #2c3a47;
   --background-item: #fff;
   --primary: #16a085;
-  --second: #34495e;
-  --smooth: transition all 0.3s ease;
+  --second: #eb4d4b;
+  --smooth: all 0.3s ease;
   --text: #dff9fb;
   --border-radius: 8px;
   --white: #fff;
   --black: #000;
   --link-color: #12cbc4;
+  --message: #2c3e50;
 }
 
 body {
@@ -23,6 +24,10 @@ body {
   background-color: var(--background);
   color: var(--text);
   font-family: "Be Vietnam Pro", sans-serif;
+  overflow: hidden;
+}
+html {
+  scroll-behavior: smooth;
 }
 
 code {
@@ -30,27 +35,61 @@ code {
     monospace;
 }
 
+label,
+input {
+  color: #000;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .login-bg {
   background-color: #fff;
   /* background-image: linear-gradient(
-    43deg,
-    #4158d0 0%,
-    #c850c0 46%,
-    #ffcc70 100%
-  ); */
+      43deg,
+      #4158d0 0%,
+      #c850c0 46%,
+      #ffcc70 100%
+    ); */
 }
 .shadow {
   box-shadow: 0px 0px 14px 2px rgba(0, 0, 0, 0.3);
 }
 .notification {
+  animation: notify 0.5s ease;
   position: absolute;
   top: 20px;
   right: 20px;
   transition: var(--smooth);
   max-width: 400px;
-  animation: notify 0.5s ease;
+  min-width: 392px;
+  min-height: 20px;
 }
-input:not(:placeholder-shown) {
+.notification p {
+  text-align: center;
+}
+.notification .counter {
+  transition: all 0.75s ease;
+}
+.account-page input:not(:placeholder-shown) {
   border-bottom: 2px solid #000 !important;
 }
 img {
@@ -113,5 +152,75 @@ img {
   bottom: 0;
   right: 0;
 }
+.dice {
+  transition: var(--smooth);
+  position: absolute;
+  width: 250px;
+  top: -620%;
+}
 .result {
+  transition: var(--smooth);
+}
+
+.plate-down {
+  transition: var(--smooth);
+}
+.plate-down.active {
+  transform: translate(-50%, -50%);
+}
+.plate-up.active {
+  transition: var(--smooth);
+  transform: translate(-50%, -50%);
+}
+.create-room {
+  transition: var(--smooth);
+}
+.create-room.active {
+  transform: translate(-50%, -50%);
+}
+.bet-item:first-child {
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+.bet-item:last-child {
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+.bet-item.select {
+  background-color: var(--primary);
+}
+.plate-up-player.cover {
+  transition: var(--smooth);
+  transform: translate(-50%, -50%);
+  top: 35%;
+  left: 50%;
+}
+.plate-down-player.cover {
+  transition: var(--smooth);
+  transform: translate(-50%, -50%);
+}
+.disable {
+  cursor: not-allowed;
+  opacity: 0.5;
+  user-select: none;
+}
+.message {
+  transition: var(--smooth);
+}
+.message.active {
+  transform: translateX(0);
+}
+.message-content {
+  transition: var(--smooth);
+  animation: message-content 0.3s ease;
+}
+@keyframes message-content {
+  from {
+    opacity: 0;
+    transform: translateX(-200%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
 }

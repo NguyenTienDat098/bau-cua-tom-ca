@@ -6,7 +6,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Notifications from "../../components/Notifications";
 import { UserContext } from "../../providers/User";
 
 function Login() {
@@ -19,15 +18,11 @@ function Login() {
       navigate("/");
     }
   }, [user, navigate]);
+
   return (
     <>
-      <Notifications
-        info="notify"
-        message="Chức năng đăng nhập bằng Facebook và Github hiện chưa code xong, vui lòng đăng nhập bằng Google hoặc Email"
-        active={true}
-      />
       <div className="w-full h-screen flex items-center justify-center login-bg">
-        <div className="p-[20px] bg-[var(--background-item)] text-[var(--black)] rounded-lg shadow w-[320px] acount-page">
+        <div className="p-[20px] bg-[var(--background-item)] text-[var(--black)] rounded-lg shadow w-[320px] account-page">
           <h1 className="text-[36px] mb-2">Đăng nhập</h1>
           <div className="flex flex-col justify-center">
             <label
