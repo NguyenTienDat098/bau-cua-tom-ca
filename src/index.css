@@ -224,3 +224,19 @@ img {
     transform: translateX(0%);
   }
 }
+.message-new::before {
+  transition: var(--smooth);
+  display: none;
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-color: #eb4d4b;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.message-new.active::before {
+  display: block;
+}

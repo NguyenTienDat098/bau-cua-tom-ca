@@ -10,11 +10,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 import {
   getSimpleDocument,
   listenDocument,
+  updateArrayField,
   updateField,
 } from "../../firebase/util";
 import { UserContext } from "../../providers/User";
 import Bet from "../Bet";
 import { BetContext } from "../../providers/Bet";
+import moment from "moment/moment";
 const bets = [
   {
     name: "chicken",
@@ -197,6 +199,11 @@ function Result({ roomId }) {
                   plateDownRef.current.classList.add("active");
                 }, 500);
                 updateField("Rooms", roomId, "statusBet", "cover");
+                updateArrayField("Notifications", roomId, "content", {
+                  author: user,
+                  text: "Chủ phòng đang chuẩn bị lắc bầu cua, bạn có thể cược sau khi lắc xong",
+                  createdAt: moment().format(),
+                });
               }}
             >
               Đậy
@@ -206,6 +213,11 @@ function Result({ roomId }) {
               onClick={() => {
                 randomResultBet(roomId);
                 updateField("Rooms", roomId, "statusBet", "jounce");
+                updateArrayField("Notifications", roomId, "content", {
+                  author: user,
+                  text: "Bạn có thể đặt cược bây giờ, kết quả sẽ có ngay sau khi chủ phòng mở bát",
+                  createdAt: moment().format(),
+                });
               }}
             >
               Lắc

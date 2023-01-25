@@ -1,6 +1,11 @@
+import moment from "moment/moment";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { listenDocument, updateField } from "../../firebase/util";
+import {
+  listenDocument,
+  updateArrayField,
+  updateField,
+} from "../../firebase/util";
 import { UserContext } from "../../providers/User";
 
 function PlayerInfo({ roomId }) {
@@ -46,14 +51,14 @@ function PlayerInfo({ roomId }) {
             className="p-2 rounded-lg bg-[var(--primary)] text-white mt-2 hover:opacity-[0.5] transition-all duration-300 ease-linear"
             onClick={() => {
               let newList = roomData.listUser.filter((e) => e.id !== user.id);
-              updateField("Users", user.id, "roomIdJoin", "");
               updateField("Rooms", roomId, "listUser", newList);
-              updateField(
-                "Rooms",
-                roomId,
-                "amountUser",
-                roomData.listUser.length
-              );
+              updateField("Rooms", roomId, "amountUser", newList.length);
+              updateField("Users", user.id, "roomIdJoin", "");
+              updateArrayField("Notifications", roomId, "content", {
+                author: user,
+                text: `Người chơi ${user.username} vừa rời phòng`,
+                createdAt: moment().format(),
+              });
               navigate("/");
             }}
           >

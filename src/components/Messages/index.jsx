@@ -13,6 +13,9 @@ function Messages({ roomId }) {
     roomId: roomId,
   });
   const UserData = useContext(UserContext);
+  const [currentLengthMes, setCurrentLengthMes] = useState(0);
+  const messageRef = useRef();
+  const { user } = UserData;
 
   useEffect(() => {
     listenDocument("Messages", roomId, (data) => {
@@ -22,13 +25,31 @@ function Messages({ roomId }) {
     });
   }, [roomId]);
 
-  const { user } = UserData;
+  useEffect(() => {
+    setCurrentLengthMes(messageInRoom.content.length);
+  }, []);
+
+  useEffect(() => {
+    if (messageInRoom.content.length > currentLengthMes) {
+      if (
+        messageInRoom.content[messageInRoom.content.length - 1].author.id !==
+        user.id
+      ) {
+        messageRef.current.classList.add("active");
+      }
+    } else {
+      messageRef.current.classList.remove("active");
+    }
+  }, [messageInRoom, currentLengthMes, user.id]);
+
   return (
     <>
       <div
-        className="flex items-center justify-center p-2 absolute top-[10px] right-[10px] cursor-pointer text-black bg-white rounded-lg shadow-lg"
+        ref={messageRef}
+        className="flex items-center justify-center p-2 absolute top-[10px] right-[10px] cursor-pointer text-black bg-white rounded-lg shadow-lg message-new"
         onClick={() => {
           mesBoardRef.current.classList.add("active");
+          setCurrentLengthMes(messageInRoom.content.length);
         }}
       >
         <FontAwesomeIcon icon={faMessage} />

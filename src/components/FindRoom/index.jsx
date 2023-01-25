@@ -1,11 +1,13 @@
 import { faMagnifyingGlass, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 import {
   addDocument,
   getMutipleDocuments,
   getSimpleDocument,
+  listenDocument,
   updateArrayField,
   updateField,
 } from "../../firebase/util";
@@ -23,6 +25,23 @@ function FindRoom() {
   const { setNotifiInfo } = NotificationData;
   const createRoomRef = useRef();
   const navigate = useNavigate();
+  const [currentUser, setCurentUser] = useState(user);
+
+  useEffect(() => {
+    if (user) {
+      listenDocument("Users", user.id, (data) => {
+        if (data !== undefined) {
+          setCurentUser(data);
+        }
+      });
+    }
+  }, [roomId, user]);
+
+  useEffect(() => {
+    if (currentUser.roomIdJoin !== "") {
+      navigate("/room/" + currentUser.roomIdJoin);
+    }
+  }, [currentUser, navigate]);
 
   return (
     <>
@@ -58,7 +77,7 @@ function FindRoom() {
                       roomId: roomIdCreated,
                       owner: user.id,
                       listUser: [user],
-                      amountUser: 0,
+                      amountUser: 1,
                       maxUser: 5,
                       statusBet: "",
                     };
@@ -66,8 +85,17 @@ function FindRoom() {
                       roomId: roomIdCreated,
                       content: [],
                     };
+                    const dataNotification = {
+                      roomId: roomIdCreated,
+                      content: [],
+                    };
                     addDocument("Rooms", roomIdCreated, dataRoom);
                     addDocument("Messages", roomIdCreated, dataMessage);
+                    addDocument(
+                      "Notifications",
+                      roomIdCreated,
+                      dataNotification
+                    );
                     setNotifiInfo({
                       active: true,
                       title: "Thành công",
@@ -147,35 +175,39 @@ function FindRoom() {
             {roomsResponse.length > 0 && roomId !== " " ? (
               roomsResponse.map((e, i) => {
                 return (
-                  <Link to={"/room/" + e.roomId} key={e.roomId}>
-                    <li
-                      className="flex items-center justify-between p-2 bg-[var(--primary)] rounded-lg cursor-pointer hover:opacity-[0.5] transition-all duration-200 ease-linear w-[260px]"
-                      onClick={() => {
-                        let exists = false;
-                        e.listUser.forEach((element) => {
-                          if (element.id === user.id) {
-                            exists = true;
-                          }
-                        });
-                        if (!exists) {
-                          updateArrayField("Rooms", e.roomId, "listUser", user);
-                          updateField(
-                            "Rooms",
-                            e.roomId,
-                            "amountUser",
-                            e.amountUser + 1
-                          );
-                          updateField("Users", user.id, "roomIdJoin", e.roomId);
+                  <li
+                    key={e.roomId}
+                    className="flex items-center justify-between p-2 bg-[var(--primary)] rounded-lg cursor-pointer hover:opacity-[0.5] transition-all duration-200 ease-linear w-[260px]"
+                    onClick={() => {
+                      let exists = false;
+                      e.listUser.forEach((element) => {
+                        if (element.id === user.id) {
+                          exists = true;
                         }
-                      }}
-                    >
-                      <p>{e.roomId}</p>
-                      <p>
-                        {e.amountUser}/{e.maxUser}
-                        <FontAwesomeIcon icon={faUsers} className="ml-2" />
-                      </p>
-                    </li>
-                  </Link>
+                      });
+                      if (!exists) {
+                        updateArrayField("Rooms", e.roomId, "listUser", user);
+                        updateField(
+                          "Rooms",
+                          e.roomId,
+                          "amountUser",
+                          e.amountUser + 1
+                        );
+                        updateField("Users", user.id, "roomIdJoin", e.roomId);
+                        updateArrayField("Notifications", roomId, "content", {
+                          author: user,
+                          text: `Người chơi ${user.username} vừa tham gia vào phòng`,
+                          createdAt: moment().format(),
+                        });
+                      }
+                    }}
+                  >
+                    <p>{e.roomId}</p>
+                    <p>
+                      {e.amountUser}/{e.maxUser}
+                      <FontAwesomeIcon icon={faUsers} className="ml-2" />
+                    </p>
+                  </li>
                 );
               })
             ) : (

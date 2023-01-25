@@ -13,6 +13,7 @@ function Notification({ children }) {
     message: "",
     title: "",
   });
+
   useEffect(() => {
     if (notifiInfo.active) {
       setTimeout(() => {
@@ -25,6 +26,7 @@ function Notification({ children }) {
       }, 5000);
     }
   }, [notifiInfo.active]);
+
   useEffect(() => {
     if (notifiInfo.active) {
       Store.addNotification({

@@ -12,6 +12,7 @@ export const UserContext = createContext();
 
 function User({ children }) {
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {

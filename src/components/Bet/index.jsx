@@ -8,7 +8,11 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { BetContext } from "../../providers/Bet";
 import { UserContext } from "../../providers/User";
 import { NotificationContext } from "../../providers/Notification";
-import { listenDocument, updateArrayField } from "../../firebase/util";
+import {
+  listenDocument,
+  updateArrayField,
+  updateField,
+} from "../../firebase/util";
 
 const betItems = [
   {
@@ -54,6 +58,17 @@ function Bet({ roomId }) {
   const [roomData, setRoomData] = useState({});
   const buttonBetRef = useRef();
   const [listBet, setListBet] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      listenDocument("Users", user.id, (data) => {
+        if (data !== undefined) {
+          setCurrentUser(data);
+        }
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     listenDocument("Rooms", roomId, (data) => {
@@ -73,11 +88,16 @@ function Bet({ roomId }) {
 
   useEffect(() => {
     if (roomData.statusBet === "open" && listBet.length > 0) {
-      listBet.forEach((e) => {
-        checkResultBet(e.valueBet, e.nameBet, e.author.id, e.author.roomIdJoin);
+      listBet.forEach((e, i) => {
+        if (i < listBet.length - 1) {
+          checkResultBet(e.valueBet, e.nameBet, e.author.id, roomId);
+        } else {
+          checkResultBet(e.valueBet, e.nameBet, e.author.id, roomId);
+          updateField("Rooms", roomId, "statusBet", "close");
+        }
       });
     }
-  }, [listBet, roomData.statusBet]);
+  }, [roomData.statusBet, listBet, roomId, checkResultBet]);
 
   useEffect(() => {
     if (roomData.statusBet === "jounce") {
@@ -135,26 +155,44 @@ function Bet({ roomId }) {
           className="p-2 bg-[var(--primary)] rounded-lg ml-2 disable"
           ref={buttonBetRef}
           onClick={() => {
-            if (valueBet > 0 && valueBet <= 1000) {
-              updateArrayField("Bets", roomId, "userBets", {
-                author: user,
-                valueBet: valueBet,
-                nameBet: betName,
-              });
-              setNotifiInfo({
-                active: true,
-                type: "success",
-                message: "Đặt cược thành công",
-                title: "Thành công",
-              });
+            if (valueBet >= 100 && valueBet <= currentUser.coin) {
+              if (betName !== "") {
+                updateArrayField("Bets", roomId, "userBets", {
+                  author: user,
+                  valueBet: valueBet,
+                  nameBet: betName,
+                });
+                setNotifiInfo({
+                  active: true,
+                  type: "success",
+                  message: "Đặt cược thành công",
+                  title: "Thành công",
+                });
+              } else {
+                setNotifiInfo({
+                  active: true,
+                  type: "warning",
+                  message: "Vui lòng chọn giá trị giá trị cược",
+                  title: "Lỗi",
+                });
+              }
             } else {
-              setNotifiInfo({
-                active: true,
-                type: "warning",
-                message:
-                  "Giá trị cược không hợp lệ giá trị cược tối thiểu là 10 coin và tối đa là 1000 coin",
-                title: "Lỗi",
-              });
+              if (valueBet > currentUser.coin) {
+                setNotifiInfo({
+                  active: true,
+                  type: "warning",
+                  message: "Bạn không đủ tiền để cược !!!",
+                  title: "Lỗi",
+                });
+              } else if (valueBet < 100) {
+                setNotifiInfo({
+                  active: true,
+                  type: "warning",
+                  message:
+                    "Giá trị cược không hợp lệ, giá trị cược tối thiểu là 100 coin",
+                  title: "Lỗi",
+                });
+              }
             }
           }}
         >
