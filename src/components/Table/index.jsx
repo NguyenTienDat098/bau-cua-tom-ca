@@ -25,7 +25,7 @@ function Table({ roomId }) {
   }, [roomData]);
 
   return (
-    <div className="absolute top-[35%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[60%] flex items-center justify-center p-[40px] rounded-full bg-[#6ab04c] shadow-lg">
+    <div className="absolute top-[35%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[60%] flex items-center justify-center p-[40px] rounded-full bg-[#6ab04c] shadow-lg table-play">
       {userInRoom.map((e) => {
         if (e.id !== roomData.owner) {
           return (

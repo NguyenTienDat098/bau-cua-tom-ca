@@ -163,8 +163,11 @@ function Result({ roomId }) {
         >
           <img src={plateDown} alt="plate" />
         </div>
-        <div className="absolute bottom-[0] w-[400px] result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg">
-          <div className="flex items-center justify-center" ref={diceRef}>
+        <div className="absolute bottom-[0] w-[400px] result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg controll">
+          <div
+            className="flex items-center justify-center result-dice"
+            ref={diceRef}
+          >
             <ul className="flex items-center justify-center mb-2">
               <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
                 <img
@@ -189,7 +192,7 @@ function Result({ roomId }) {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="btn-controll">
             <button
               className="p-3 text-center rounded-lg m-1 bg-[#eb4d4b]"
               onClick={() => {

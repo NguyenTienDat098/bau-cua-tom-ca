@@ -25,6 +25,8 @@ body {
   color: var(--text);
   font-family: "Be Vietnam Pro", sans-serif;
   overflow: hidden;
+  height: 100vh;
+  width: 100%;
 }
 html {
   scroll-behavior: smooth;
@@ -261,4 +263,50 @@ img {
 }
 .style-item li {
   counter-increment: li;
+}
+/* RESPOSIVE */
+@media only screen and (max-width: 1024px) {
+  .player-info {
+    display: none;
+  }
+
+  .table-item {
+    width: 100px;
+    height: 100px;
+  }
+  .player {
+    width: 60px;
+    height: 60px;
+  }
+  .table-play {
+    top: 50%;
+    left: 35%;
+  }
+  .result {
+    width: fit-content;
+    display: flex;
+    border-radius: 0;
+    flex-direction: row;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: translate(0, 0);
+  }
+  .result .result-dice ul {
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .result .btn-controll {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .result button {
+    min-width: 60px;
+  }
 }

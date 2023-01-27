@@ -35,7 +35,7 @@ function PlayerInfo({ roomId }) {
 
   if (currentUser) {
     return (
-      <div className="absolute shadow-lg bottom-[10px] left-[10px] bg-[white] rounded-lg p-2 w-[260px] text-[#000]">
+      <div className="absolute shadow-lg bottom-[10px] left-[10px] bg-[white] rounded-lg p-2 w-[260px] text-[#000] player-info">
         <div className="flex items-center justify-center flex-col m-2 border-b-2 border-gray-900">
           <img
             src={currentUser.photo}
