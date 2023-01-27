@@ -131,7 +131,11 @@ function Result({ roomId }) {
     } else if (roomData.statusBet === "open" && plateDownPlayerRef.current) {
       plateDownPlayerRef.current.classList.remove("cover");
     } else {
-      if (plateDownPlayerRef.current && plateUpPlayerRef.current) {
+      if (
+        plateDownPlayerRef.current &&
+        plateUpPlayerRef.current &&
+        diceRef.current
+      ) {
         plateDownPlayerRef.current.classList.remove("cover");
         plateUpPlayerRef.current.classList.remove("cover");
       }
@@ -163,35 +167,35 @@ function Result({ roomId }) {
         >
           <img src={plateDown} alt="plate" />
         </div>
+        <div
+          className="flex items-center justify-center result-dice"
+          ref={diceRef}
+        >
+          <ul className="flex items-center justify-center mb-2">
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+              <img
+                src={imgResult.firstImgResult}
+                alt="result"
+                className="w-[100%] object-cover scale-[1.3]"
+              />
+            </li>
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+              <img
+                src={imgResult.secondImgResult}
+                alt="result"
+                className="w-[100%] object-cover scale-[1.3]"
+              />
+            </li>
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+              <img
+                src={imgResult.thirdImgResult}
+                alt="result"
+                className="w-[100%] object-cover scale-[1.3]"
+              />
+            </li>
+          </ul>
+        </div>
         <div className="absolute bottom-[0] w-[400px] result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg controll">
-          <div
-            className="flex items-center justify-center result-dice"
-            ref={diceRef}
-          >
-            <ul className="flex items-center justify-center mb-2">
-              <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-                <img
-                  src={imgResult.firstImgResult}
-                  alt="result"
-                  className="w-[100%] object-cover scale-[1.3]"
-                />
-              </li>
-              <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-                <img
-                  src={imgResult.secondImgResult}
-                  alt="result"
-                  className="w-[100%] object-cover scale-[1.3]"
-                />
-              </li>
-              <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-                <img
-                  src={imgResult.thirdImgResult}
-                  alt="result"
-                  className="w-[100%] object-cover scale-[1.3]"
-                />
-              </li>
-            </ul>
-          </div>
           <div className="btn-controll">
             <button
               className="p-3 text-center rounded-lg m-1 bg-[#eb4d4b]"
@@ -214,6 +218,7 @@ function Result({ roomId }) {
             <button
               className="p-3 text-center rounded-lg m-1 bg-[#6ab04c]"
               onClick={() => {
+                diceRef.current.classList.add("hidden-dice");
                 randomResultBet(roomId);
                 updateField("Rooms", roomId, "statusBet", "jounce");
                 updateArrayField("Notifications", roomId, "content", {
@@ -228,6 +233,7 @@ function Result({ roomId }) {
             <button
               className="p-3 text-center rounded-lg m-1 bg-[#22a6b3]"
               onClick={() => {
+                diceRef.current.classList.remove("hidden-dice");
                 plateDownRef.current.classList.remove("active");
                 updateField("Rooms", roomId, "statusBet", "open");
               }}
@@ -240,6 +246,7 @@ function Result({ roomId }) {
                 plateDownRef.current.classList.remove("active");
                 plateUpRef.current.classList.remove("active");
                 diceRef.current.classList.remove("dice");
+                diceRef.current.classList.remove("hidden-dice");
                 updateField("Rooms", roomId, "statusBet", "close");
               }}
             >

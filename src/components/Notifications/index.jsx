@@ -8,7 +8,9 @@ import "animate.css/animate.compat.css";
 function Notifications() {
   return (
     <>
-      <ReactNotifications />
+      <div className="notifications">
+        <ReactNotifications />
+      </div>
     </>
   );
 }

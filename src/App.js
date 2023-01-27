@@ -10,14 +10,16 @@ function App() {
   useEffect(() => {});
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/room/:roomId" element={<Room />}></Route>
-          <Route path="/" element={<Home />}></Route>
-        </Routes>
-      </Router>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/room/:roomId" element={<Room />}></Route>
+            <Route path="/" element={<Home />}></Route>
+          </Routes>
+        </Router>
+      </div>
     </>
   );
 }

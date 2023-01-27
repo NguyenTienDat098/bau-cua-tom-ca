@@ -118,7 +118,7 @@ function Bet({ roomId }) {
   }, [betName]);
 
   return (
-    <div className="absolute bottom-[0]  result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg">
+    <div className="absolute bottom-[0]  result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg bet">
       <div className="flex items-center justify-center flex-col">
         <ul className="flex items-end justify-evenly">
           {betItems.map((e) => {
