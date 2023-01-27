@@ -155,43 +155,45 @@ function Bet({ roomId }) {
           className="p-2 bg-[var(--primary)] rounded-lg ml-2 disable"
           ref={buttonBetRef}
           onClick={() => {
-            if (valueBet >= 100 && valueBet <= currentUser.coin) {
-              if (betName !== "") {
-                updateArrayField("Bets", roomId, "userBets", {
-                  author: user,
-                  valueBet: valueBet,
-                  nameBet: betName,
-                });
-                setNotifiInfo({
-                  active: true,
-                  type: "success",
-                  message: "Đặt cược thành công",
-                  title: "Thành công",
-                });
+            if (roomData.statusBet === "jounce") {
+              if (valueBet >= 100 && valueBet <= currentUser.coin) {
+                if (betName !== "") {
+                  updateArrayField("Bets", roomId, "userBets", {
+                    author: user,
+                    valueBet: valueBet,
+                    nameBet: betName,
+                  });
+                  setNotifiInfo({
+                    active: true,
+                    type: "success",
+                    message: "Đặt cược thành công",
+                    title: "Thành công",
+                  });
+                } else {
+                  setNotifiInfo({
+                    active: true,
+                    type: "warning",
+                    message: "Vui lòng chọn giá trị giá trị cược",
+                    title: "Lỗi",
+                  });
+                }
               } else {
-                setNotifiInfo({
-                  active: true,
-                  type: "warning",
-                  message: "Vui lòng chọn giá trị giá trị cược",
-                  title: "Lỗi",
-                });
-              }
-            } else {
-              if (valueBet > currentUser.coin) {
-                setNotifiInfo({
-                  active: true,
-                  type: "warning",
-                  message: "Bạn không đủ tiền để cược !!!",
-                  title: "Lỗi",
-                });
-              } else if (valueBet < 100) {
-                setNotifiInfo({
-                  active: true,
-                  type: "warning",
-                  message:
-                    "Giá trị cược không hợp lệ, giá trị cược tối thiểu là 100 coin",
-                  title: "Lỗi",
-                });
+                if (valueBet > currentUser.coin) {
+                  setNotifiInfo({
+                    active: true,
+                    type: "warning",
+                    message: "Bạn không đủ tiền để cược !!!",
+                    title: "Lỗi",
+                  });
+                } else if (valueBet < 100) {
+                  setNotifiInfo({
+                    active: true,
+                    type: "warning",
+                    message:
+                      "Giá trị cược không hợp lệ, giá trị cược tối thiểu là 100 coin",
+                    title: "Lỗi",
+                  });
+                }
               }
             }
           }}

@@ -63,7 +63,7 @@ function Chart() {
                       <img
                         src={e.photo}
                         alt="avatar"
-                        className="w-full object-cover"
+                        className="w-full object-cover rounded-lg"
                       />
                     </div>
                     <div className="ml-4">

@@ -23,7 +23,6 @@ function Bet({ children }) {
   };
 
   const checkResultBet = (betValue, nameBet, userId, roomId) => {
-    console.log(betValue, nameBet, userId, roomId);
     getSimpleDocument("Rooms", roomId)
       .then((roomRes) => {
         getSimpleDocument("Bets", roomId)
