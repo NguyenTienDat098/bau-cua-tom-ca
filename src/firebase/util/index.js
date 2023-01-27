@@ -58,6 +58,15 @@ const listenDocument = (colName, docName, callback) => {
   });
 };
 
+const getCollection = async (colName) => {
+  let response = [];
+  const querySnapshot = await getDocs(collection(db, colName));
+  querySnapshot.forEach((doc) => {
+    response.push(doc.data());
+  });
+  return response;
+};
+
 export {
   addDocument,
   getSimpleDocument,
@@ -65,4 +74,5 @@ export {
   updateArrayField,
   updateField,
   listenDocument,
+  getCollection,
 };

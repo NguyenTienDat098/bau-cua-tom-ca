@@ -10,6 +10,7 @@ import Loading from "../Loading";
 import { listenDocument } from "../../firebase/util";
 import { NotificationContext } from "../../providers/Notification";
 import moment from "moment/moment";
+import Chart from "../Chart";
 function Room() {
   const { roomId } = useParams();
   const UserData = useContext(UserContext);
@@ -73,6 +74,7 @@ function Room() {
         <Results roomId={roomId} />
         <PlayerInfo roomId={roomId} />
         <Messages roomId={roomId} />
+        <Chart />
       </>
     );
   }

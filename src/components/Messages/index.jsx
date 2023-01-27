@@ -55,23 +55,26 @@ function Messages({ roomId }) {
         <FontAwesomeIcon icon={faMessage} />
       </div>
       <div
-        className="absolute top-0 right-0 bottom-0 w-[360px] bg-[white] p-2 translate-x-[200%] message shadow-lg"
+        className="absolute top-0 right-0 bottom-0 w-[360px] bg-[white] translate-x-[200%] message shadow-lg flex flex-col"
         ref={mesBoardRef}
       >
         <div
-          className="text-black absolute top-[10px] left-[10px] text-[18px] cursor-pointer hover:opacity-[0.5] transition-all duration-300 ease-out"
+          className="text-black absolute top-[10px] left-[10px]  cursor-pointer hover:opacity-[0.5] transition-all duration-300 ease-out"
           onClick={() => {
             mesBoardRef.current.classList.remove("active");
           }}
         >
           <FontAwesomeIcon icon={faLeftLong} />
         </div>
-        <div className="overflow-y-scroll h-[90%] mt-[30px] scroll-hidden border-t-2 border-gray-800 border-b-2">
+        <p className="w-full text-center text-gray-700 font-bold p-2">
+          Tin nhắn
+        </p>
+        <div className="overflow-y-scroll flex-1 scroll-hidden border-t-2 border-gray-800 border-b-2 ">
           {messageInRoom.content.length > 0
             ? messageInRoom.content.map((e) => {
                 return (
                   <div
-                    className="flex items-center mb-2 mt-2 message-content"
+                    className="flex items-center mb-2 mt-2 message-content ml-2"
                     key={e.createdAt}
                   >
                     <img

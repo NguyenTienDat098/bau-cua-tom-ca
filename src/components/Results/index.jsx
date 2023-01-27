@@ -4,7 +4,7 @@ import gourd from "../../imgs/bau.jpeg";
 import crab from "../../imgs/cua.jpeg";
 import crawfish from "../../imgs/tom.jpeg";
 import fish from "../../imgs/ca.jpeg";
-import plateUp from "../../imgs/dia-mo.png";
+import plateUp from "../../imgs/dia-mo2.png";
 import plateDown from "../../imgs/dia-up.png";
 import { useContext, useEffect, useRef, useState } from "react";
 import {

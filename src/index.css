@@ -240,3 +240,25 @@ img {
 .message-new.active::before {
   display: block;
 }
+
+.chart {
+  transition: var(--smooth);
+}
+.chart.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+.style-item {
+  list-style: none;
+  counter-reset: li;
+}
+.style-item li::before {
+  content: counter(li);
+  color: #ff6b6b;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+}
+.style-item li {
+  counter-increment: li;
+}
