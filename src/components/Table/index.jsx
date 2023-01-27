@@ -30,30 +30,54 @@ function Table({ roomId }) {
         if (e.id !== roomData.owner) {
           return (
             <div className="player" key={e.id}>
-              <img src={e.photo} alt="player" />
+              <img src={e.photo} alt="player" className="rounded-full" />
             </div>
           );
         }
         return false;
       })}
       <div className="grid grid-cols-3 gap-1">
-        <div className="table-item">
-          <img src={chicken} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={chicken}
+            alt="table"
+          />
         </div>
-        <div className="table-item">
-          <img src={deer} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={deer}
+            alt="table"
+          />
         </div>
-        <div className="table-item">
-          <img src={gourd} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={gourd}
+            alt="table"
+          />
         </div>
-        <div className="table-item">
-          <img src={crab} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={crab}
+            alt="table"
+          />
         </div>
-        <div className="table-item">
-          <img src={crawfish} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={crawfish}
+            alt="table"
+          />
         </div>
-        <div className="table-item">
-          <img src={fish} alt="table" />
+        <div className="table-item overflow-hidden rounded-lg">
+          <img
+            className="w-full object-cover scale-[1.2]"
+            src={fish}
+            alt="table"
+          />
         </div>
       </div>
     </div>
