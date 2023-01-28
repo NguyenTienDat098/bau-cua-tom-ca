@@ -17,6 +17,7 @@ import { UserContext } from "../../providers/User";
 import Bet from "../Bet";
 import { BetContext } from "../../providers/Bet";
 import moment from "moment/moment";
+import LazyLoad from "react-lazyload";
 const bets = [
   {
     name: "chicken",
@@ -159,13 +160,17 @@ function Result({ roomId }) {
           className="absolute top-[35%] left-[50%] translate-x-[-450%] translate-y-[-50%] plate-up"
           ref={plateUpRef}
         >
-          <img src={plateUp} alt="plate" className="bet-player" />
+          <LazyLoad threshold={300}>
+            <img src={plateUp} alt="plate" className="bet-player" />
+          </LazyLoad>
         </div>
         <div
           className="absolute top-[35%] left-[50%] translate-x-[-50%] translate-y-[250%] w-[400px] z-10 plate-down"
           ref={plateDownRef}
         >
-          <img src={plateDown} alt="plate" />
+          <LazyLoad threshold={300}>
+            <img src={plateDown} alt="plate" />
+          </LazyLoad>
         </div>
         <div
           className="flex items-center justify-center result-dice"
@@ -173,25 +178,31 @@ function Result({ roomId }) {
         >
           <ul className="flex items-center justify-center mb-2">
             <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-              <img
-                src={imgResult.firstImgResult}
-                alt="result"
-                className="w-[100%] object-cover scale-[1.3]"
-              />
+              <LazyLoad threshold={300}>
+                <img
+                  src={imgResult.firstImgResult}
+                  alt="result"
+                  className="w-[100%] object-cover scale-[1.3]"
+                />
+              </LazyLoad>
             </li>
             <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-              <img
-                src={imgResult.secondImgResult}
-                alt="result"
-                className="w-[100%] object-cover scale-[1.3]"
-              />
+              <LazyLoad threshold={300}>
+                <img
+                  src={imgResult.secondImgResult}
+                  alt="result"
+                  className="w-[100%] object-cover scale-[1.3]"
+                />
+              </LazyLoad>
             </li>
             <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
-              <img
-                src={imgResult.thirdImgResult}
-                alt="result"
-                className="w-[100%] object-cover scale-[1.3]"
-              />
+              <LazyLoad threshold={300}>
+                <img
+                  src={imgResult.thirdImgResult}
+                  alt="result"
+                  className="w-[100%] object-cover scale-[1.3]"
+                />
+              </LazyLoad>
             </li>
           </ul>
         </div>
@@ -263,28 +274,36 @@ function Result({ roomId }) {
         className="absolute top-[0px] right-[0px] translate-x-[0%] translate-y-[0%] w-[260px] plate-up-player"
         ref={plateUpPlayerRef}
       >
-        <img src={plateUp} alt="plate" className="w-[100%] object-cover" />
+        <LazyLoad threshold={300}>
+          <img src={plateUp} alt="plate" className="w-[100%] object-cover" />
+        </LazyLoad>
         <ul className="flex items-center justify-center mb-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%]">
           <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
-            <img
-              src={imgResult.firstImgResult}
-              alt="result"
-              className="object-cover rounded-lg w-[100%] scale-[1.3]"
-            />
+            <LazyLoad threshold={300}>
+              <img
+                src={imgResult.firstImgResult}
+                alt="result"
+                className="object-cover rounded-lg w-[100%] scale-[1.3]"
+              />
+            </LazyLoad>
           </li>
           <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
-            <img
-              src={imgResult.secondImgResult}
-              alt="result"
-              className="object-cover rounded-lg w-[100%] scale-[1.3]"
-            />
+            <LazyLoad threshold={300}>
+              <img
+                src={imgResult.secondImgResult}
+                alt="result"
+                className="object-cover rounded-lg w-[100%] scale-[1.3]"
+              />
+            </LazyLoad>
           </li>
           <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
-            <img
-              src={imgResult.thirdImgResult}
-              alt="result"
-              className="object-cover rounded-lg w-[100%] scale-[1.3]"
-            />
+            <LazyLoad threshold={300}>
+              <img
+                src={imgResult.thirdImgResult}
+                alt="result"
+                className="object-cover rounded-lg w-[100%] scale-[1.3]"
+              />
+            </LazyLoad>
           </li>
         </ul>
       </div>
@@ -292,7 +311,9 @@ function Result({ roomId }) {
         className="absolute top-[35%] left-[50%] translate-x-[-50%] translate-y-[250%] w-[400px] z-10 plate-down plate-down-player"
         ref={plateDownPlayerRef}
       >
-        <img src={plateDown} alt="plate" />
+        <LazyLoad threshold={300}>
+          <img src={plateDown} alt="plate" />
+        </LazyLoad>
       </div>
       <Bet roomId={roomId} />
     </>
