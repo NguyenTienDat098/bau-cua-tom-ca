@@ -277,7 +277,7 @@ function Result({ roomId }) {
         <LazyLoad threshold={300}>
           <img src={plateUp} alt="plate" className="w-[100%] object-cover" />
         </LazyLoad>
-        <ul className="flex items-center justify-center mb-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%]">
+        <ul className="w-[160px] flex items-center justify-center mb-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
             <LazyLoad threshold={300}>
               <img
