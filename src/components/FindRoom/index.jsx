@@ -1,4 +1,8 @@
-import { faMagnifyingGlass, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faRightFromBracket,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +21,7 @@ import { CheckSpacing } from "../FormValid";
 
 function FindRoom() {
   const UserData = useContext(UserContext);
-  const { user } = UserData;
+  const { user, logout } = UserData;
   const [roomId, setRoomId] = useState("");
   const [roomIdCreated, setRoomIdCreated] = useState("");
   const [roomsResponse, setRoomsResponse] = useState([]);
@@ -45,6 +49,14 @@ function FindRoom() {
 
   return (
     <>
+      <div
+        className="absolute top-[10px] right-[10px] bg-white text-black p-2 rounded-lg flex items-center justify-center cursor-pointer"
+        onClick={() => {
+          logout();
+        }}
+      >
+        <FontAwesomeIcon icon={faRightFromBracket} />
+      </div>
       <div className="w-full h-screen flex flex-col items-center">
         <div
           className="create-room absolute shadow-lg top-[50%] left-[50%] translate-x-[-300%] translate-y-[-50%] bg-white rounded-lg p-4 flex flex-col items-center"

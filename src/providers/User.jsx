@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/configs";
 import { addDocument, getSimpleDocument } from "../firebase/util";
@@ -99,8 +100,23 @@ function User({ children }) {
         // ...
       });
   };
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const value = useMemo(
-    () => ({ user, setUser, signUpWithEmailPassword, signInWithGoogle }),
+    () => ({
+      user,
+      setUser,
+      signUpWithEmailPassword,
+      signInWithGoogle,
+      logout,
+    }),
     [user]
   );
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
