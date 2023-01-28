@@ -13,7 +13,6 @@ import {
   updateArrayField,
   updateField,
 } from "../../firebase/util";
-import LazyLoad from "react-lazyload";
 
 const betItems = [
   {
@@ -132,13 +131,11 @@ function Bet({ roomId }) {
                   setBetName(e.bet);
                 }}
               >
-                <LazyLoad threshold={300}>
-                  <img
-                    src={e.img}
-                    alt={e.bet}
-                    className="w-[100%] object-cover"
-                  />
-                </LazyLoad>
+                <img
+                  src={e.img}
+                  alt={e.bet}
+                  className="w-[100%] object-cover"
+                />
               </li>
             );
           })}

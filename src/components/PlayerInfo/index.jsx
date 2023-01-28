@@ -2,7 +2,6 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment/moment";
 import { useEffect, useContext, useState, useRef } from "react";
-import LazyLoad from "react-lazyload";
 import { useNavigate } from "react-router-dom";
 import {
   listenDocument,
@@ -53,13 +52,11 @@ function PlayerInfo({ roomId }) {
           ref={playerInfoRef}
         >
           <div className="flex items-center justify-center flex-col m-2 border-b-2 border-gray-900">
-            <LazyLoad threshold={300}>
-              <img
-                src={currentUser.photo}
-                alt="avatar"
-                className="w-[100px] h-[100px] rounded-full border-4 p-2 border-gray-800 object-cover"
-              />
-            </LazyLoad>
+            <img
+              src={currentUser.photo}
+              alt="avatar"
+              className="w-[100px] h-[100px] rounded-full border-4 p-2 border-gray-800 object-cover"
+            />
             <p>{currentUser.username}</p>
             <p>Coin: {currentUser.coin}</p>
           </div>
