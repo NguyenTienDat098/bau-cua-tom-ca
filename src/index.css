@@ -409,4 +409,7 @@ img {
   .chart-player {
     font-size: 14px;
   }
+  .plate-up-player ul {
+    width: 160px;
+  }
 }
