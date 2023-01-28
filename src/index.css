@@ -306,16 +306,16 @@ img {
   }
 
   .table-item {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
   .player {
     width: 60px;
     height: 60px;
   }
   .table-play {
-    top: 40%;
-    left: 35%;
+    top: 50%;
+    left: 50%;
   }
   .result {
     width: fit-content;
@@ -333,10 +333,10 @@ img {
     position: absolute;
     bottom: 0;
     left: 0;
-    left: 35%;
+    left: 50%;
   }
   .result-dice.dice {
-    top: 40%;
+    top: 50%;
   }
   .result-dice ul li {
     width: 40px;
@@ -363,7 +363,7 @@ img {
   .plate-up {
     top: 50%;
     width: 30%;
-    left: 35%;
+    left: 50%;
   }
   .bet {
     top: auto;
@@ -380,18 +380,18 @@ img {
     height: 60px;
   }
   .plate-up.active {
-    top: 40%;
-    left: 35%;
+    top: 50%;
+    left: 50%;
   }
   .plate-down.active {
-    top: 40%;
-    left: 35%;
+    top: 50%;
+    left: 50%;
   }
   .plate-up-player.cover {
     transition: var(--smooth);
     transform: translate(-50%, -50%);
-    top: 40%;
-    left: 35%;
+    top: 50%;
+    left: 50%;
   }
   .plate-down-player.cover {
     transition: var(--smooth);
