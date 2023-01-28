@@ -395,7 +395,7 @@ img {
   }
   .plate-down-player.cover {
     transition: var(--smooth);
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -50%);
   }
   .plate-up-player.cover ul li {
     width: 45px;
