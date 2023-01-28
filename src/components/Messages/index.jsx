@@ -66,10 +66,11 @@ function Messages({ roomId }) {
         >
           <FontAwesomeIcon icon={faLeftLong} />
         </div>
-        <p className="w-full text-center text-gray-700 font-bold p-2">
+
+        <p className="text-lg text-gray-700 font-bold p-2 border-b-2 border-gray-700 w-full text-center">
           Tin nhắn
         </p>
-        <div className="overflow-y-scroll flex-1 scroll-hidden border-t-2 border-gray-800 border-b-2 ">
+        <div className="overflow-y-scroll flex-1 scroll-hidden">
           {messageInRoom.content.length > 0
             ? messageInRoom.content.map((e) => {
                 return (
@@ -91,7 +92,7 @@ function Messages({ roomId }) {
               })
             : false}
         </div>
-        <div className="flex items-center justify-evenly m-2">
+        <div className="flex items-center justify-evenly p-2 border-gray-800 border-t-2 w-full">
           <input
             type="text"
             placeholder="Nhập vào tin nhắn..."

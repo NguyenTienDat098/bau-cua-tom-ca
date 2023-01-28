@@ -1,5 +1,7 @@
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment/moment";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   listenDocument,
@@ -14,6 +16,7 @@ function PlayerInfo({ roomId }) {
   const [roomData, setRoomData] = useState({});
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
+  const playerInfoRef = useRef();
 
   useEffect(() => {
     if (user) {
@@ -35,37 +38,50 @@ function PlayerInfo({ roomId }) {
 
   if (currentUser) {
     return (
-      <div className="absolute shadow-lg bottom-[10px] left-[10px] bg-[white] rounded-lg p-2 w-[260px] text-[#000] player-info">
-        <div className="flex items-center justify-center flex-col m-2 border-b-2 border-gray-900">
-          <img
-            src={currentUser.photo}
-            alt="avatar"
-            className="w-[100px] h-[100px] rounded-full border-4 p-2 border-gray-800 object-cover"
-          />
-          <p>{currentUser.username}</p>
-          <p>Coin: {currentUser.coin}</p>
+      <>
+        <div
+          className="absolute top-[50px] right-[10px] p-2 flex items-center justify-center cursor-pointer text-black bg-white rounded-lg"
+          onClick={() => {
+            playerInfoRef.current.classList.toggle("active");
+          }}
+        >
+          <FontAwesomeIcon icon={faUser} />
         </div>
-        <div className="m-2">
-          <p>Phòng đang tham gia: {roomId}</p>
-          <button
-            className="p-2 rounded-lg bg-[var(--primary)] text-white mt-2 hover:opacity-[0.5] transition-all duration-300 ease-linear"
-            onClick={() => {
-              let newList = roomData.listUser.filter((e) => e.id !== user.id);
-              updateField("Rooms", roomId, "listUser", newList);
-              updateField("Rooms", roomId, "amountUser", newList.length);
-              updateField("Users", user.id, "roomIdJoin", "");
-              updateArrayField("Notifications", roomId, "content", {
-                author: user,
-                text: `Người chơi ${user.username} vừa rời phòng`,
-                createdAt: moment().format(),
-              });
-              navigate("/");
-            }}
-          >
-            Rời phòng
-          </button>
+        <div
+          className="absolute shadow-lg bottom-[10px] left-[10px] bg-[white] rounded-lg p-2 w-[260px] text-[#000] player-info"
+          ref={playerInfoRef}
+        >
+          <div className="flex items-center justify-center flex-col m-2 border-b-2 border-gray-900">
+            <img
+              src={currentUser.photo}
+              alt="avatar"
+              className="w-[100px] h-[100px] rounded-full border-4 p-2 border-gray-800 object-cover"
+            />
+            <p>{currentUser.username}</p>
+            <p>Coin: {currentUser.coin}</p>
+          </div>
+          <div className="m-2">
+            <p>Phòng đang tham gia: {roomId}</p>
+            <button
+              className="p-2 rounded-lg bg-[var(--primary)] text-white mt-2 hover:opacity-[0.5] transition-all duration-300 ease-linear"
+              onClick={() => {
+                let newList = roomData.listUser.filter((e) => e.id !== user.id);
+                updateField("Rooms", roomId, "listUser", newList);
+                updateField("Rooms", roomId, "amountUser", newList.length);
+                updateField("Users", user.id, "roomIdJoin", "");
+                updateArrayField("Notifications", roomId, "content", {
+                  author: user,
+                  text: `Người chơi ${user.username} vừa rời phòng`,
+                  createdAt: moment().format(),
+                });
+                navigate("/");
+              }}
+            >
+              Rời phòng
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

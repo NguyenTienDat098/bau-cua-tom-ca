@@ -37,7 +37,7 @@ function Chart() {
         <FontAwesomeIcon icon={faChartSimple} />
       </div>
       <div
-        className="absolute top-[0] bottom-0 left-[0] w-[400px] translate-x-[-250%] opacity-0 bg-white shadow-lg text-black flex flex-col items-center chart"
+        className="absolute top-[0] bottom-0 left-[0] w-[360px] translate-x-[-250%] opacity-0 bg-white shadow-lg text-black flex flex-col items-center chart"
         ref={chartRef}
       >
         <div
@@ -54,11 +54,14 @@ function Chart() {
         <p className="text-lg text-gray-700 font-bold p-2 border-b-2 border-gray-700 w-full text-center">
           Bảng xếp hạng
         </p>
-        <ul className="flex flex-col w-full list-none style-item">
+        <ul className="flex flex-col w-full list-none style-item chart-players overflow-y-scroll scroll-smooth scroll-hidden max-h-[300px]">
           {player.length > 0
             ? player.map((e) => {
                 return (
-                  <li key={e.id} className="p-2 w-full items-center flex">
+                  <li
+                    key={e.id}
+                    className="p-2 w-full items-center flex chart-player"
+                  >
                     <div className="w-[60px]">
                       <img
                         src={e.photo}
