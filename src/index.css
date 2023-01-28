@@ -57,7 +57,7 @@ input[type="number"] {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  min-height: 400px;
+  min-height: 600px;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scroll-hidden::-webkit-scrollbar {
