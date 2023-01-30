@@ -11,3 +11,4 @@ function BetPosition({ betName, userBet }) {
 }
 
 export default BetPosition;
+// Write me a message Component and css for this component

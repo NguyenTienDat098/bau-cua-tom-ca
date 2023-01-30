@@ -60,15 +60,6 @@ function Bet({ children }) {
                           "coin",
                           parseInt(res.coin) - parseInt(betValue) * winPrize
                         );
-
-                        setNotifiInfo({
-                          active: true,
-                          type: "info",
-                          message: `Bạn nhận được ${
-                            parseInt(betValue) * parseInt(winPrize)
-                          } coin`,
-                          title: "Thông báo",
-                        });
                       })
                       .catch((error) => {
                         console.log(error);
@@ -77,6 +68,15 @@ function Bet({ children }) {
                   .catch((error) => {
                     console.log(error);
                   });
+
+                setNotifiInfo({
+                  active: true,
+                  type: "info",
+                  message: `Bạn nhận được ${
+                    parseInt(betValue) * parseInt(winPrize)
+                  } coin`,
+                  title: "Thông báo",
+                });
               } else {
                 getSimpleDocument("Users", userId)
                   .then((res) => {
@@ -94,12 +94,6 @@ function Bet({ children }) {
                           "coin",
                           parseInt(res.coin) + parseInt(betValue)
                         );
-                        setNotifiInfo({
-                          active: true,
-                          type: "info",
-                          message: `Hụt rồi bạn bị trừ ${betValue} coin !!!`,
-                          title: "Thông báo",
-                        });
                       })
                       .catch((error) => {
                         console.log(error);
@@ -108,6 +102,12 @@ function Bet({ children }) {
                   .catch((error) => {
                     console.log(error);
                   });
+                setNotifiInfo({
+                  active: true,
+                  type: "info",
+                  message: `Hụt rồi bạn bị trừ ${betValue} coin !!!`,
+                  title: "Thông báo",
+                });
               }
               updateField("Bets", roomId, "firstResult", "");
               updateField("Bets", roomId, "secondResult", "");
