@@ -77,7 +77,7 @@ function Room() {
       );
       const timeDiff = currentTime.diff(createdAt, "minutes");
 
-      if (timeDiff < 2) {
+      if (timeDiff < 1) {
         setNotifiInfo({
           active: true,
           title:

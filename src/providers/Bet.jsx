@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
-import { addDocument, getSimpleDocument, updateField } from "../firebase/util";
+import { getSimpleDocument, updateField } from "../firebase/util";
 import { NotificationContext } from "./Notification";
 
 export const BetContext = createContext();
@@ -29,7 +29,7 @@ function Bet({ children }) {
               betRes.secondResult !== "" &&
               betRes.thirdResult !== ""
             ) {
-              let winPrize = 1;
+              let winPrize = 0;
               switch (nameBet) {
                 case betRes.firstResult:
                   winPrize++;
@@ -43,7 +43,7 @@ function Bet({ children }) {
                 default:
                   break;
               }
-              if (winPrize > 1) {
+              if (winPrize >= 1) {
                 getSimpleDocument("Users", userId)
                   .then((userRes) => {
                     updateField(
@@ -52,14 +52,6 @@ function Bet({ children }) {
                       "coin",
                       parseInt(userRes.coin) + parseInt(betValue) * winPrize
                     );
-                    setNotifiInfo({
-                      active: true,
-                      type: "info",
-                      message: `Bạn nhận được ${
-                        parseInt(betValue) * parseInt(winPrize)
-                      } coin`,
-                      title: "Thông báo",
-                    });
                     getSimpleDocument("Users", roomRes.owner)
                       .then((res) => {
                         updateField(
@@ -68,6 +60,15 @@ function Bet({ children }) {
                           "coin",
                           parseInt(res.coin) - parseInt(betValue) * winPrize
                         );
+
+                        setNotifiInfo({
+                          active: true,
+                          type: "info",
+                          message: `Bạn nhận được ${
+                            parseInt(betValue) * parseInt(winPrize)
+                          } coin`,
+                          title: "Thông báo",
+                        });
                       })
                       .catch((error) => {
                         console.log(error);
@@ -85,12 +86,6 @@ function Bet({ children }) {
                       "coin",
                       parseInt(res.coin) - parseInt(betValue)
                     );
-                    setNotifiInfo({
-                      active: true,
-                      type: "info",
-                      message: `Hụt rồi bạn bị trừ ${betValue} coin !!!`,
-                      title: "Thông báo",
-                    });
                     getSimpleDocument("Users", roomRes.owner)
                       .then((res) => {
                         updateField(
@@ -99,6 +94,12 @@ function Bet({ children }) {
                           "coin",
                           parseInt(res.coin) + parseInt(betValue)
                         );
+                        setNotifiInfo({
+                          active: true,
+                          type: "info",
+                          message: `Hụt rồi bạn bị trừ ${betValue} coin !!!`,
+                          title: "Thông báo",
+                        });
                       })
                       .catch((error) => {
                         console.log(error);
