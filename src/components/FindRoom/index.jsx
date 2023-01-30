@@ -101,6 +101,12 @@ function FindRoom() {
                       roomId: roomIdCreated,
                       content: [],
                     };
+                    const dataBet = {
+                      firstResult: "",
+                      secondResult: "",
+                      thirdResult: "",
+                      userBets: [],
+                    };
                     addDocument("Rooms", roomIdCreated, dataRoom);
                     addDocument("Messages", roomIdCreated, dataMessage);
                     addDocument(
@@ -108,6 +114,7 @@ function FindRoom() {
                       roomIdCreated,
                       dataNotification
                     );
+                    addDocument("Bets", roomIdCreated, dataBet);
                     setNotifiInfo({
                       active: true,
                       title: "Thành công",

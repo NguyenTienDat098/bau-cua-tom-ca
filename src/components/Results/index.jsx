@@ -112,33 +112,20 @@ function Result({ roomId }) {
   }, [roomId]);
 
   useEffect(() => {
-    if (
-      roomData.statusBet === "cover" &&
-      plateUpPlayerRef.current &&
-      plateDownPlayerRef.current
-    ) {
-      plateUpPlayerRef.current.classList.add("cover");
-      setTimeout(() => {
+    if (roomData.statusBet === "cover" || roomData.statusBet === "jounce") {
+      if (plateUpPlayerRef.current && plateDownPlayerRef.current) {
+        plateUpPlayerRef.current.classList.add("cover");
         plateDownPlayerRef.current.classList.add("cover");
-      }, 500);
+      }
+    } else if (roomData.statusBet === "open" && plateDownPlayerRef.current) {
+      plateDownPlayerRef.current.classList.remove("cover");
     } else if (
-      roomData.statusBet === "jounce" &&
+      roomData.statusBet === "close" &&
       plateDownPlayerRef.current &&
       plateUpPlayerRef.current
     ) {
-      plateUpPlayerRef.current.classList.add("cover");
-      plateDownPlayerRef.current.classList.add("cover");
-    } else if (roomData.statusBet === "open" && plateDownPlayerRef.current) {
       plateDownPlayerRef.current.classList.remove("cover");
-    } else {
-      if (
-        plateDownPlayerRef.current &&
-        plateUpPlayerRef.current &&
-        diceRef.current
-      ) {
-        plateDownPlayerRef.current.classList.remove("cover");
-        plateUpPlayerRef.current.classList.remove("cover");
-      }
+      plateUpPlayerRef.current.classList.remove("cover");
     }
   }, [roomData, plateUpPlayerRef, plateDownPlayerRef]);
 
@@ -172,21 +159,21 @@ function Result({ roomId }) {
           ref={diceRef}
         >
           <ul className="flex items-center justify-center mb-2">
-            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-2 border-gray-800">
               <img
                 src={imgResult.firstImgResult}
                 alt="result"
                 className="w-[100%] object-cover scale-[1.3]"
               />
             </li>
-            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-2 border-gray-800">
               <img
                 src={imgResult.secondImgResult}
                 alt="result"
                 className="w-[100%] object-cover scale-[1.3]"
               />
             </li>
-            <li className="m-1 animate-bounce rounded-full overflow-hidden border-4 border-gray-800">
+            <li className="m-1 animate-bounce rounded-full overflow-hidden border-2 border-gray-800">
               <img
                 src={imgResult.thirdImgResult}
                 alt="result"
@@ -243,6 +230,7 @@ function Result({ roomId }) {
             <button
               className="p-3 text-center rounded-lg m-1 bg-[#fdcb6e]"
               onClick={() => {
+                updateField("Bets", roomId, "userBets", []);
                 plateDownRef.current.classList.remove("active");
                 plateUpRef.current.classList.remove("active");
                 diceRef.current.classList.remove("dice");
@@ -260,26 +248,26 @@ function Result({ roomId }) {
   return (
     <>
       <div
-        className="absolute top-[0px] right-[0px] translate-x-[0%] translate-y-[0%] w-[260px] plate-up-player"
+        className="absolute top-[0px] right-[0px] translate-x-[0%] translate-y-[0%] w-[240px] plate-up-player"
         ref={plateUpPlayerRef}
       >
         <img src={plateUp} alt="plate" className="w-[100%] object-cover" />
-        <ul className="w-[160px] flex items-center justify-center mb-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
+        <ul className="w-[130px] flex items-center justify-center mb-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <li className="m-1 rounded-full overflow-hidden border-2 border-gray-800  animate-bounce">
             <img
               src={imgResult.firstImgResult}
               alt="result"
               className="object-cover rounded-lg w-[100%] scale-[1.3]"
             />
           </li>
-          <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
+          <li className="m-1 rounded-full overflow-hidden border-2 border-gray-800  animate-bounce">
             <img
               src={imgResult.secondImgResult}
               alt="result"
               className="object-cover rounded-lg w-[100%] scale-[1.3]"
             />
           </li>
-          <li className="m-1 rounded-full overflow-hidden border-4 border-gray-800  animate-bounce">
+          <li className="m-1 rounded-full overflow-hidden border-2 border-gray-800  animate-bounce">
             <img
               src={imgResult.thirdImgResult}
               alt="result"

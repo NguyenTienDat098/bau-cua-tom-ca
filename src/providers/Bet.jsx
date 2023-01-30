@@ -14,12 +14,9 @@ function Bet({ children }) {
     let secondRandomResult = bets[Math.floor(Math.random() * bets.length)];
     let thirdRandomResult = bets[Math.floor(Math.random() * bets.length)];
 
-    addDocument("Bets", roomId, {
-      firstResult: firstRandomResult,
-      secondResult: secondRandomResult,
-      thirdResult: thirdRandomResult,
-      userBets: [],
-    });
+    updateField("Bets", roomId, "firstResult", firstRandomResult);
+    updateField("Bets", roomId, "secondResult", secondRandomResult);
+    updateField("Bets", roomId, "thirdResult", thirdRandomResult);
   };
 
   const checkResultBet = (betValue, nameBet, userId, roomId) => {

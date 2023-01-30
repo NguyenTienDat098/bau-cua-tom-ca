@@ -1,12 +1,11 @@
-import { useContext } from "react";
-import { UserContext } from "../../providers/User";
-
-function BetPosition({ betName }) {
-  const UserData = useContext(UserContext);
-  const { user } = UserData;
+function BetPosition({ betName, userBet }) {
   return (
-    <div className="rounded-full w-[80px] h-[80px] border-4 border-gray-900">
-      <img src={user.photo} alt="player" className="w-[100%] object-cover" />
+    <div className="rounded-full w-[40px] h-[40px] border-2 border-white relative z-10 player-bet overflow-hidden">
+      <img
+        src={userBet.photo}
+        alt="player"
+        className="w-[100%] object-cover bg-[var(--background)]"
+      />
     </div>
   );
 }

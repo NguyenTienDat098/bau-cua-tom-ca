@@ -100,7 +100,7 @@ function Bet({ roomId }) {
   }, [roomData.statusBet, listBet, roomId, checkResultBet]);
 
   useEffect(() => {
-    if (roomData.statusBet === "jounce") {
+    if (roomData.statusBet !== "jounce") {
       buttonBetRef.current.classList.remove("disable");
     } else {
       buttonBetRef.current.classList.add("disable");
@@ -155,7 +155,7 @@ function Bet({ roomId }) {
           className="p-2 bg-[var(--primary)] rounded-lg ml-2 disable"
           ref={buttonBetRef}
           onClick={() => {
-            if (roomData.statusBet === "jounce") {
+            if (roomData.statusBet !== "jounce") {
               if (valueBet >= 100 && valueBet <= currentUser.coin) {
                 if (betName !== "") {
                   updateArrayField("Bets", roomId, "userBets", {

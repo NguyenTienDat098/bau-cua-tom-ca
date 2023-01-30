@@ -6,14 +6,24 @@ import crawfish from "../../imgs/tom.jpeg";
 import fish from "../../imgs/ca.jpeg";
 import { useEffect, useState } from "react";
 import { listenDocument } from "../../firebase/util";
+import BetPosition from "../BetPosition";
 function Table({ roomId }) {
   const [roomData, setRoomData] = useState({});
   const [userInRoom, setUserInRoom] = useState([]);
-
+  const [bets, setBets] = useState([]);
   useEffect(() => {
     listenDocument("Rooms", roomId, (data) => {
       if (data !== undefined) {
         setRoomData(data);
+      }
+    });
+  }, [roomId]);
+
+  useEffect(() => {
+    listenDocument("Bets", roomId, (data) => {
+      if (data !== undefined) {
+        console.log(data.userBets);
+        setBets(data.userBets);
       }
     });
   }, [roomId]);
@@ -38,6 +48,22 @@ function Table({ roomId }) {
       })}
       <div className="grid grid-cols-3 gap-1">
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "chicken") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={chicken}
@@ -45,6 +71,22 @@ function Table({ roomId }) {
           />
         </div>
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "deer") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={deer}
@@ -52,6 +94,22 @@ function Table({ roomId }) {
           />
         </div>
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "gourd") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={gourd}
@@ -59,6 +117,22 @@ function Table({ roomId }) {
           />
         </div>
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "crab") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={crab}
@@ -66,6 +140,22 @@ function Table({ roomId }) {
           />
         </div>
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "crawfish") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={crawfish}
@@ -73,6 +163,22 @@ function Table({ roomId }) {
           />
         </div>
         <div className="table-item overflow-hidden rounded-lg">
+          <div className="absolute top-0 bottom-0 left-0 w-full">
+            {bets.length > 0
+              ? bets.map((e) => {
+                  if (e.nameBet === "fish") {
+                    return (
+                      <BetPosition
+                        betName={e.nameBet}
+                        key={e.author.id}
+                        userBet={e.author}
+                      />
+                    );
+                  }
+                  return false;
+                })
+              : false}
+          </div>
           <img
             className="w-full object-cover scale-[1.2]"
             src={fish}
