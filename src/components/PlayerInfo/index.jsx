@@ -40,7 +40,7 @@ function PlayerInfo({ roomId }) {
     return (
       <>
         <div
-          className="absolute top-[50px] right-[10px] p-2 flex items-center justify-center cursor-pointer text-black bg-white rounded-lg"
+          className="absolute top-[10px] left-[82px] p-2 flex items-center justify-center cursor-pointer text-black bg-white rounded-lg"
           onClick={() => {
             playerInfoRef.current.classList.toggle("active");
           }}

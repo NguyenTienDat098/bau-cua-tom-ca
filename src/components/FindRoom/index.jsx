@@ -58,103 +58,112 @@ function FindRoom() {
         <FontAwesomeIcon icon={faRightFromBracket} />
       </div>
       <div className="w-full h-screen flex flex-col items-center">
-        <div
-          className="create-room absolute shadow-lg top-[50%] left-[50%] translate-x-[-300%] translate-y-[-50%] bg-white rounded-lg p-4 flex flex-col items-center"
-          ref={createRoomRef}
-        >
-          <div className="">
-            <label htmlFor="id-room">ID phòng</label>
-            <input
-              type="text"
-              id="id-room"
-              value={roomIdCreated}
-              onChange={(e) => {
-                setRoomIdCreated(e.target.value);
-              }}
-              placeholder="Nhập vào id phòng bạn muốn tạo"
-              className="outline-none border-none rounded-lg p-2 mr-2 text-black min-w-[300px]"
-            />
-          </div>
-          <div>
-            <button
-              className="m-1 p-2 bg-[var(--primary)] rounded-lg w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear"
-              onClick={async () => {
-                if (CheckSpacing(roomIdCreated)) {
-                  const checkExists = await getSimpleDocument(
-                    "Rooms",
-                    roomIdCreated
-                  );
-                  if (checkExists === -1) {
-                    const dataRoom = {
-                      roomId: roomIdCreated,
-                      owner: user.id,
-                      listUser: [user],
-                      amountUser: 1,
-                      maxUser: 5,
-                      statusBet: "",
-                    };
-                    const dataMessage = {
-                      roomId: roomIdCreated,
-                      content: [],
-                    };
-                    const dataNotification = {
-                      roomId: roomIdCreated,
-                      content: [],
-                    };
-                    const dataBet = {
-                      firstResult: "",
-                      secondResult: "",
-                      thirdResult: "",
-                      userBets: [],
-                    };
-                    addDocument("Rooms", roomIdCreated, dataRoom);
-                    addDocument("Messages", roomIdCreated, dataMessage);
-                    addDocument(
-                      "Notifications",
-                      roomIdCreated,
-                      dataNotification
+        {currentUser.createRoom ? (
+          <div
+            className="create-room absolute shadow-lg top-[50%] left-[50%] translate-x-[-300%] translate-y-[-50%] bg-white rounded-lg p-4 flex flex-col items-center"
+            ref={createRoomRef}
+          >
+            <div className="">
+              <label htmlFor="id-room">ID phòng</label>
+              <input
+                type="text"
+                id="id-room"
+                value={roomIdCreated}
+                onChange={(e) => {
+                  setRoomIdCreated(e.target.value);
+                }}
+                placeholder="Nhập vào id phòng bạn muốn tạo"
+                className="outline-none border-none rounded-lg p-2 mr-2 text-black min-w-[300px]"
+              />
+            </div>
+            <div>
+              <button
+                className="m-1 p-2 bg-[var(--primary)] rounded-lg w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear"
+                onClick={async () => {
+                  if (CheckSpacing(roomIdCreated) && currentUser.createRoom) {
+                    const checkExists = await getSimpleDocument(
+                      "Rooms",
+                      roomIdCreated
                     );
-                    addDocument("Bets", roomIdCreated, dataBet);
-                    setNotifiInfo({
-                      active: true,
-                      title: "Thành công",
-                      message: "Tạo phòng thành công",
-                      type: "success",
-                    });
-                    createRoomRef.current.classList.remove("active");
-                    updateField("Users", user.id, "roomIdJoin", roomIdCreated);
-                    navigate("/room/" + roomIdCreated);
+                    if (checkExists === -1) {
+                      const dataRoom = {
+                        roomId: roomIdCreated,
+                        owner: user.id,
+                        listUser: [user],
+                        amountUser: 1,
+                        maxUser: 5,
+                        statusBet: "",
+                      };
+                      const dataMessage = {
+                        roomId: roomIdCreated,
+                        content: [],
+                      };
+                      const dataNotification = {
+                        roomId: roomIdCreated,
+                        content: [],
+                      };
+                      const dataBet = {
+                        firstResult: "",
+                        secondResult: "",
+                        thirdResult: "",
+                        userBets: [],
+                      };
+                      addDocument("Rooms", roomIdCreated, dataRoom);
+                      addDocument("Messages", roomIdCreated, dataMessage);
+                      addDocument(
+                        "Notifications",
+                        roomIdCreated,
+                        dataNotification
+                      );
+                      addDocument("Bets", roomIdCreated, dataBet);
+                      setNotifiInfo({
+                        active: true,
+                        title: "Thành công",
+                        message: "Tạo phòng thành công",
+                        type: "success",
+                      });
+                      createRoomRef.current.classList.remove("active");
+                      updateField(
+                        "Users",
+                        user.id,
+                        "roomIdJoin",
+                        roomIdCreated
+                      );
+                      navigate("/room/" + roomIdCreated);
+                    } else {
+                      setNotifiInfo({
+                        active: true,
+                        title: "Lỗi",
+                        message: "ID phòng đã tồn tại !!!",
+                        type: "danger",
+                      });
+                    }
                   } else {
                     setNotifiInfo({
                       active: true,
                       title: "Lỗi",
-                      message: "ID phòng đã tồn tại !!!",
+                      message: "ID phòng không hợp lệ !!!",
                       type: "danger",
                     });
                   }
-                } else {
-                  setNotifiInfo({
-                    active: true,
-                    title: "Lỗi",
-                    message: "ID phòng không hợp lệ !!!",
-                    type: "danger",
-                  });
-                }
-                setRoomIdCreated("");
-              }}
-            >
-              Tạo
-            </button>
-            <button
-              className="m-1 p-2 bg-[var(--second)] rounded-lg w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear"
-              onClick={() => {
-                createRoomRef.current.classList.remove("active");
-              }}
-            >
-              Huỷ
-            </button>
+                  setRoomIdCreated("");
+                }}
+              >
+                Tạo
+              </button>
+              <button
+                className="m-1 p-2 bg-[var(--second)] rounded-lg w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear"
+                onClick={() => {
+                  createRoomRef.current.classList.remove("active");
+                }}
+              >
+                Huỷ
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          false
+        )}
         <div className="mb-4 mt-2">
           <input
             value={roomId}
@@ -179,14 +188,18 @@ function FindRoom() {
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
-          <button
-            className="p-2 bg-[var(--primary)] rounded-lg m-w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear ml-2"
-            onClick={() => {
-              createRoomRef.current.classList.add("active");
-            }}
-          >
-            Tạo phòng
-          </button>
+          {currentUser.createRoom ? (
+            <button
+              className="p-2 bg-[var(--primary)] rounded-lg m-w-[60px] hover:opacity-[0.5] transition-all duration-200 ease-linear ml-2"
+              onClick={() => {
+                createRoomRef.current.classList.add("active");
+              }}
+            >
+              Tạo phòng
+            </button>
+          ) : (
+            false
+          )}
         </div>
         <div>
           <p className="text-center">Danh sách các phòng</p>

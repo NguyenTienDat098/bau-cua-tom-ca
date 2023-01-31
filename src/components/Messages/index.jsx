@@ -46,7 +46,7 @@ function Messages({ roomId }) {
     <>
       <div
         ref={messageRef}
-        className="flex items-center justify-center p-2 absolute top-[10px] right-[10px] cursor-pointer text-black bg-white rounded-lg shadow-lg message-new"
+        className="flex items-center justify-center p-2 absolute top-[10px] left-[45px] cursor-pointer text-black bg-white rounded-lg shadow-lg message-new"
         onClick={() => {
           mesBoardRef.current.classList.add("active");
           setCurrentLengthMes(messageInRoom.content.length);

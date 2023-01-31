@@ -185,7 +185,20 @@ function Result({ roomId }) {
         <div className="absolute bottom-[0] w-[400px] result left-[50%] translate-x-[-50%] flex items-center justify-center flex-col bg-[#3c6382] p-2 rounded-lg rounded-bl-none rounded-br-none shadow-lg controll">
           <div className="btn-controll">
             <button
-              className="p-3 text-center rounded-lg m-1 bg-[#eb4d4b]"
+              className="p-2 text-center rounded-lg m-1 bg-[#620d66]"
+              onClick={() => {
+                updateField("Rooms", roomId, "statusBet", "start");
+                updateArrayField("Notifications", roomId, "content", {
+                  author: user,
+                  text: "Bắt đầu đặt cược !!!",
+                  createdAt: moment().format(),
+                });
+              }}
+            >
+              Vào
+            </button>
+            <button
+              className="p-2 text-center rounded-lg m-1 bg-[#eb4d4b]"
               onClick={() => {
                 plateUpRef.current.classList.add("active");
                 diceRef.current.classList.add("dice");
@@ -195,7 +208,7 @@ function Result({ roomId }) {
                 updateField("Rooms", roomId, "statusBet", "cover");
                 updateArrayField("Notifications", roomId, "content", {
                   author: user,
-                  text: "Chủ phòng đang chuẩn bị lắc bầu cua, bạn có thể cược sau khi lắc xong",
+                  text: "Chủ phòng đang chuẩn bị lắc bầu cua, kết quả sẽ có ngay sau khi lắc xong",
                   createdAt: moment().format(),
                 });
               }}
@@ -203,22 +216,17 @@ function Result({ roomId }) {
               Đậy
             </button>
             <button
-              className="p-3 text-center rounded-lg m-1 bg-[#6ab04c]"
+              className="p-2 text-center rounded-lg m-1 bg-[#6ab04c]"
               onClick={() => {
                 diceRef.current.classList.add("hidden-dice");
                 randomResultBet(roomId);
                 updateField("Rooms", roomId, "statusBet", "jounce");
-                updateArrayField("Notifications", roomId, "content", {
-                  author: user,
-                  text: "Bạn có thể đặt cược bây giờ, kết quả sẽ có ngay sau khi chủ phòng mở bát",
-                  createdAt: moment().format(),
-                });
               }}
             >
               Lắc
             </button>
             <button
-              className="p-3 text-center rounded-lg m-1 bg-[#22a6b3]"
+              className="p-2 text-center rounded-lg m-1 bg-[#22a6b3]"
               onClick={() => {
                 diceRef.current.classList.remove("hidden-dice");
                 plateDownRef.current.classList.remove("active");
@@ -228,7 +236,7 @@ function Result({ roomId }) {
               Mở
             </button>
             <button
-              className="p-3 text-center rounded-lg m-1 bg-[#fdcb6e]"
+              className="p-2 text-center rounded-lg m-1 bg-[#fdcb6e]"
               onClick={() => {
                 updateField("Bets", roomId, "userBets", []);
                 plateDownRef.current.classList.remove("active");

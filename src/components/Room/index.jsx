@@ -11,7 +11,12 @@ import { listenDocument } from "../../firebase/util";
 import { NotificationContext } from "../../providers/Notification";
 import moment from "moment/moment";
 import Chart from "../Chart";
+import Music from "../Music";
+import xoso from "../../mp3/xoso.mp3";
+import xucxac from "../../mp3/xucxac.mp3";
+
 function Room() {
+  const [musicSrc, setMusicSrc] = useState(null);
   const { roomId } = useParams();
   const UserData = useContext(UserContext);
   const { user } = UserData;
@@ -24,6 +29,7 @@ function Room() {
   });
   const [isResponse, setIsResponse] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [roomData, setRoomData] = useState(null);
 
   useEffect(() => {
     const handleResponse = () => {
@@ -50,8 +56,27 @@ function Room() {
   }, []);
 
   useEffect(() => {
+    listenDocument("Rooms", roomId, (data) => {
+      if (data !== undefined) {
+        setRoomData(data);
+      }
+    });
+  }, [roomId]);
+
+  useEffect(() => {
+    if (roomData !== null) {
+      if (roomData.statusBet === "start" || roomData.statusBet === "cover") {
+        setMusicSrc(xoso);
+      } else if (roomData.statusBet === "jounce") {
+        setMusicSrc(xucxac);
+      } else {
+        setMusicSrc(null);
+      }
+    }
+  }, [roomData]);
+
+  useEffect(() => {
     if (user) {
-      console.log("first");
       listenDocument("Users", user.id, (data) => {
         if (data !== undefined) {
           setCurrentUser(data);
@@ -112,6 +137,7 @@ function Room() {
         <PlayerInfo roomId={roomId} />
         <Messages roomId={roomId} />
         <Chart />
+        <Music source={musicSrc} />
       </>
     );
   }
