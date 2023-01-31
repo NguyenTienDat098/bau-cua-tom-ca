@@ -23,6 +23,7 @@ function Room() {
     roomId: roomId,
   });
   const [isResponse, setIsResponse] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const handleResponse = () => {
@@ -47,19 +48,31 @@ function Room() {
       window.removeEventListener("resize", handleResponse);
     };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log("first");
+      listenDocument("Users", user.id, (data) => {
+        if (data !== undefined) {
+          setCurrentUser(data);
+        }
+      });
+    }
+  }, [roomId, user]);
+
   useEffect(() => {
     if (!user) {
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } else {
-      if (user.roomIdJoin !== "") {
+      if (currentUser !== null && currentUser.roomIdJoin !== "") {
         setTimeout(() => {
-          navigate(`/room/${user.roomIdJoin}`);
+          navigate(`/room/${currentUser.roomIdJoin}`);
         }, 3000);
       }
     }
-  }, [navigate, user]);
+  }, [navigate, user, currentUser]);
 
   useEffect(() => {
     listenDocument("Notifications", roomId, (data) => {

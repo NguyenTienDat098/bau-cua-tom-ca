@@ -22,7 +22,6 @@ function Table({ roomId }) {
   useEffect(() => {
     listenDocument("Bets", roomId, (data) => {
       if (data !== undefined) {
-        console.log(data.userBets);
         setBets(data.userBets);
       }
     });
