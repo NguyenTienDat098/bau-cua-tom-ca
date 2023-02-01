@@ -4,7 +4,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
 import {
@@ -30,6 +30,53 @@ function FindRoom() {
   const createRoomRef = useRef();
   const navigate = useNavigate();
   const [currentUser, setCurentUser] = useState(user);
+  const [roomData, setRoomData] = useState(null);
+
+  const hasNetwork = useCallback(
+    (online) => {
+      if (user) {
+        updateField("Users", user.id, "online", online);
+      }
+    },
+    [user]
+  );
+  useEffect(() => {
+    const handleCheckOnline = () => {
+      if (user && user.uid) {
+        hasNetwork(navigator.onLine);
+        window.addEventListener("online", () => {
+          hasNetwork(true);
+        });
+        window.addEventListener("offline", () => {
+          hasNetwork(false);
+        });
+      }
+    };
+    window.addEventListener("load", handleCheckOnline);
+    return () => {
+      window.removeEventListener("load", handleCheckOnline);
+    };
+  }, [user, hasNetwork]);
+
+  // set active use false when leave the page
+  useEffect(() => {
+    window.onbeforeunload = () => {
+      hasNetwork(false);
+    };
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [hasNetwork]);
+
+  useEffect(() => {
+    if (roomId !== "") {
+      listenDocument("Rooms", roomId, (data) => {
+        if (data !== undefined) {
+          setRoomData(data);
+        }
+      });
+    }
+  }, [roomId]);
 
   useEffect(() => {
     if (user) {
@@ -218,19 +265,31 @@ function FindRoom() {
                         }
                       });
                       if (!exists) {
-                        updateArrayField("Rooms", e.roomId, "listUser", user);
-                        updateField(
-                          "Rooms",
-                          e.roomId,
-                          "amountUser",
-                          e.amountUser + 1
-                        );
-                        updateField("Users", user.id, "roomIdJoin", e.roomId);
-                        updateArrayField("Notifications", roomId, "content", {
-                          author: user,
-                          text: `Người chơi ${user.username} vừa tham gia vào phòng`,
-                          createdAt: moment().format(),
-                        });
+                        if (
+                          roomData !== null &&
+                          roomData.amountUser < roomData.maxUser
+                        ) {
+                          updateArrayField("Rooms", e.roomId, "listUser", user);
+                          updateField(
+                            "Rooms",
+                            e.roomId,
+                            "amountUser",
+                            e.amountUser + 1
+                          );
+                          updateField("Users", user.id, "roomIdJoin", e.roomId);
+                          updateArrayField("Notifications", roomId, "content", {
+                            author: user,
+                            text: `Người chơi ${user.username} vừa tham gia vào phòng`,
+                            createdAt: moment().format(),
+                          });
+                        } else {
+                          setNotifiInfo({
+                            active: true,
+                            title: "Phòng đầy",
+                            message: "Phòng này đã đầy !!!",
+                            type: "warning",
+                          });
+                        }
                       }
                     }}
                   >

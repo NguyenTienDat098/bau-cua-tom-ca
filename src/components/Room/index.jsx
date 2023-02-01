@@ -4,10 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Notifications from "../Notifications";
 import PlayerInfo from "../PlayerInfo";
 import Messages from "../Messages";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useCallback } from "react";
 import { UserContext } from "../../providers/User";
 import Loading from "../Loading";
-import { listenDocument } from "../../firebase/util";
+import { listenDocument, updateField } from "../../firebase/util";
 import { NotificationContext } from "../../providers/Notification";
 import moment from "moment/moment";
 import Chart from "../Chart";
@@ -28,32 +28,66 @@ function Room() {
     roomId: roomId,
   });
   const [isResponse, setIsResponse] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [roomData, setRoomData] = useState(null);
 
+  const hasNetwork = useCallback(
+    (online) => {
+      if (user) {
+        updateField("Users", user.id, "online", online);
+      }
+    },
+    [user]
+  );
   useEffect(() => {
-    const handleResponse = () => {
-      if (window.innerWidth < 500) {
-        setIsResponse(false);
-        setNotifiInfo({
-          active: true,
-          title: "Thông báo",
-          type: "info",
-          message:
-            "Vui lòng sử dụng ở chế độ xoay ngang màn hình để có trải nhiệm tốt nhất !",
+    const handleCheckOnline = () => {
+      if (user && user.uid) {
+        hasNetwork(navigator.onLine);
+        window.addEventListener("online", () => {
+          hasNetwork(true);
         });
-      } else {
-        setIsResponse(true);
+        window.addEventListener("offline", () => {
+          hasNetwork(false);
+        });
       }
     };
-    window.addEventListener("DOMContentLoaded", handleResponse());
-    window.addEventListener("resize", handleResponse);
-
+    window.addEventListener("load", handleCheckOnline);
     return () => {
-      window.removeEventListener("DOMContentLoaded", handleResponse());
-      window.removeEventListener("resize", handleResponse);
+      window.removeEventListener("load", handleCheckOnline);
     };
-  }, []);
+  }, [user, hasNetwork]);
+
+  // set active use false when leave the page
+  useEffect(() => {
+    window.onbeforeunload = () => {
+      hasNetwork(false);
+    };
+  }, [hasNetwork]);
+
+  const handleResponse = useCallback(() => {
+    if (window.innerWidth < 500) {
+      setIsResponse(false);
+      setNotifiInfo({
+        active: true,
+        title: "Thông báo",
+        type: "info",
+        message:
+          "Vui lòng sử dụng ở chế độ xoay ngang màn hình để có trải nhiệm tốt nhất !",
+      });
+    } else {
+      setIsResponse(true);
+    }
+  }, [setNotifiInfo]);
+
+  useEffect(() => {
+    const handleResize = () => handleResponse();
+    const handleDomLoaded = () => handleResponse();
+    window.addEventListener("DOMContentLoaded", handleDomLoaded());
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("DOMContentLoaded", handleDomLoaded());
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResponse]);
 
   useEffect(() => {
     listenDocument("Rooms", roomId, (data) => {
@@ -76,28 +110,18 @@ function Room() {
   }, [roomData]);
 
   useEffect(() => {
-    if (user) {
-      listenDocument("Users", user.id, (data) => {
-        if (data !== undefined) {
-          setCurrentUser(data);
-        }
-      });
-    }
-  }, [roomId, user]);
-
-  useEffect(() => {
     if (!user) {
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } else {
-      if (currentUser !== null && currentUser.roomIdJoin !== "") {
+      if (user.roomIdJoin !== "") {
         setTimeout(() => {
-          navigate(`/room/${currentUser.roomIdJoin}`);
+          navigate(`/room/${user.roomIdJoin}`);
         }, 3000);
       }
     }
-  }, [navigate, user, currentUser]);
+  }, [navigate, user]);
 
   useEffect(() => {
     listenDocument("Notifications", roomId, (data) => {

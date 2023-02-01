@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 
 function App() {
-  useEffect(() => {});
   return (
     <>
       <div className="App">

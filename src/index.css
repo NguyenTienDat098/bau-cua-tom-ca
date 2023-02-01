@@ -427,4 +427,7 @@ img {
   .chart-player {
     font-size: 14px;
   }
+  .chart-players {
+    max-height: 300px;
+  }
 }

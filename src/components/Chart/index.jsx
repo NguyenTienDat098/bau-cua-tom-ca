@@ -54,7 +54,7 @@ function Chart() {
         <p className="text-lg text-gray-700 font-bold p-2 border-b-2 border-gray-700 w-full text-center">
           Bảng xếp hạng
         </p>
-        <ul className="flex flex-col w-full list-none style-item chart-players overflow-y-scroll scroll-smooth scroll-hidden max-h-[300px]">
+        <ul className="flex flex-col w-full list-none style-item chart-players overflow-y-scroll scroll-smooth scroll-hidden">
           {player.length > 0
             ? player.map((e) => {
                 return (

@@ -1,4 +1,10 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -7,7 +13,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/configs";
-import { addDocument, getSimpleDocument } from "../firebase/util";
+import { addDocument, getSimpleDocument, updateField } from "../firebase/util";
 
 export const UserContext = createContext();
 
@@ -30,6 +36,7 @@ function User({ children }) {
               coin: res.coin,
               nameBet: res.nameBet,
               roomIdJoin: res.roomIdJoin,
+              online: res.online,
             });
           })
           .catch((error) => {
@@ -57,6 +64,7 @@ function User({ children }) {
           coin: 1000,
           nameBet: "",
           roomIdJoin: "",
+          online: true,
         };
         setUser(data);
       })
@@ -82,6 +90,7 @@ function User({ children }) {
           coin: 1000,
           nameBet: "",
           roomIdJoin: "",
+          online: true,
         };
         setUser(data);
         addDocument("Users", user.uid, data);
@@ -100,15 +109,17 @@ function User({ children }) {
         // ...
       });
   };
-  const logout = () => {
+  const logout = useCallback(() => {
     signOut(auth)
       .then(() => {
         setUser(null);
+        updateField("Users", user.id, "online", false);
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [user]);
+
   const value = useMemo(
     () => ({
       user,
@@ -117,7 +128,7 @@ function User({ children }) {
       signInWithGoogle,
       logout,
     }),
-    [user]
+    [user, logout]
   );
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

@@ -4,7 +4,7 @@ import moment from "moment/moment";
 import { useState, useRef, useContext, useEffect } from "react";
 import { listenDocument, updateArrayField } from "../../firebase/util";
 import { UserContext } from "../../providers/User";
-
+import messageAlert from "../../mp3/messageAlert.mp3";
 function Messages({ roomId }) {
   const mesBoardRef = useRef();
   const [message, setMessage] = useState("");
@@ -15,7 +15,35 @@ function Messages({ roomId }) {
   const UserData = useContext(UserContext);
   const [currentLengthMes, setCurrentLengthMes] = useState(0);
   const messageRef = useRef();
+  const inputSendMesRef = useRef();
   const { user } = UserData;
+  const audioRef = useRef();
+  const [audioSrc, setAudioSrc] = useState(null);
+  const boardChatRef = useRef();
+
+  const handleSendMessage = () => {
+    updateArrayField("Messages", roomId, "content", {
+      author: user,
+      roomId: roomId,
+      text: message,
+      createdAt: moment().format(),
+    });
+    setMessage("");
+    inputSendMesRef.current.focus();
+  };
+
+  useEffect(() => {
+    const handlePressEnter = (e) => {
+      if (e.keyCode === 13) {
+        handleSendMessage();
+      }
+    };
+    window.addEventListener("keydown", handlePressEnter);
+
+    return () => {
+      window.removeEventListener("keydown", handlePressEnter);
+    };
+  });
 
   useEffect(() => {
     listenDocument("Messages", roomId, (data) => {
@@ -36,14 +64,19 @@ function Messages({ roomId }) {
         user.id
       ) {
         messageRef.current.classList.add("active");
+        setAudioSrc(messageAlert);
+        audioRef.current.play();
+        boardChatRef.current.scrollTop = boardChatRef.current.scrollHeight;
       }
     } else {
+      setAudioSrc(null);
       messageRef.current.classList.remove("active");
     }
   }, [messageInRoom, currentLengthMes, user.id]);
 
   return (
     <>
+      <audio src={audioSrc} ref={audioRef} hidden></audio>
       <div
         ref={messageRef}
         className="flex items-center justify-center p-2 absolute top-[10px] left-[45px] cursor-pointer text-black bg-white rounded-lg shadow-lg message-new"
@@ -70,7 +103,10 @@ function Messages({ roomId }) {
         <p className="text-lg text-gray-700 font-bold p-2 border-b-2 border-gray-700 w-full text-center">
           Tin nhắn
         </p>
-        <div className="overflow-y-scroll flex-1 scroll-hidden">
+        <div
+          className="overflow-y-scroll flex-1 scroll-hidden"
+          ref={boardChatRef}
+        >
           {messageInRoom.content.length > 0
             ? messageInRoom.content.map((e) => {
                 return (
@@ -94,6 +130,7 @@ function Messages({ roomId }) {
         </div>
         <div className="flex items-center justify-evenly p-2 border-gray-800 border-t-2 w-full">
           <input
+            ref={inputSendMesRef}
             type="text"
             placeholder="Nhập vào tin nhắn..."
             className="p-2 outline-none"
@@ -105,13 +142,7 @@ function Messages({ roomId }) {
           <button
             className="p-2 rounded-lg bg-[var(--primary)] hover:opacity-[0.5] transition-all duration-300 ease-out"
             onClick={() => {
-              updateArrayField("Messages", roomId, "content", {
-                author: user,
-                roomId: roomId,
-                text: message,
-                createdAt: moment().format(),
-              });
-              setMessage("");
+              handleSendMessage();
             }}
           >
             Gửi
